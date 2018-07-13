@@ -1,4 +1,4 @@
-# forge.tutorial.viewmodels.nodejs
+# step by step procedure for viewing files for non developers
 
 [![Node.js](https://img.shields.io/badge/Node.js-4.4.3-blue.svg)](https://nodejs.org/)
 [![npm](https://img.shields.io/badge/npm-2.15.1-blue.svg)](https://www.npmjs.com/)
@@ -31,15 +31,11 @@ To run it, install the required packages, set the enviroment variables with your
 Mac OSX/Linux (Terminal)
 
     npm install
-    export FORGE_CLIENT_ID=<<YOUR CLIENT ID FROM DEVELOPER PORTAL>>
-    export FORGE_CLIENT_SECRET=<<YOUR CLIENT SECRET>>
     npm start
 
 Windows (use **Node.js command line** from Start menu)
 
     npm install
-    set FORGE_CLIENT_ID=<<YOUR CLIENT ID FROM DEVELOPER PORTAL>>
-    set FORGE_CLIENT_SECRET=<<YOUR CLIENT SECRET>>
     npm start
 
 Open the browser: [http://localhost:3000](http://localhost:3000).
@@ -73,4 +69,4 @@ Please see the [LICENSE](LICENSE) file for full details.
 
 ## Written by
 
-Augusto Goncalves [@augustomaia](https://twitter.com/augustomaia), [Forge Partner Development](http://forge.autodesk.com)
+Varun Patil [@varunpatil578](https://twitter.com/varunpatil578), [Forge Partner Development](http://forge.autodesk.com)
