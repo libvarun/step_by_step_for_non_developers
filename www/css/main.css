@@ -1,0 +1,29 @@
+﻿html, body{
+  min-height: 100%;
+  height: 100%;
+}
+
+.fill{
+  height: calc(100vh - 100px);
+}
+
+body {
+  padding-top: 60px; /* space for the top nav bar */
+  margin-right: 30px;
+}
+
+#appBuckets {
+  overflow: auto;
+  width: 100%;
+  height: calc(100vh - 150px);
+}
+
+#forgeViewer {
+  width: 100%;
+}
+
+.heading{text-align: center;}
+
+.step2container,.step3container,.step4container,.translate_container,.step1response,.step2response,.step3response,.step4response,.step5response,.step5container,.loader {display: none;}
+.tokenresponse,.bucketresponse,.uploadresponse,.filesresponse,.translateresponse{height: 150px;width: 600px;}
+.loader{position: fixed;left: 50%;top: 50%;transform: translate(-50%, -50%);display: hidden;}
