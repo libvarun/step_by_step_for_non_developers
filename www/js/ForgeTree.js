@@ -18,10 +18,6 @@
       }
     });
   });
-
-  $('.clientid').val('Ljo954e85bXX1GlyDYntArvPFuA9VG8U')
-  $('.clientsecret').val('S6lnfWtxO8fMuXAG');
-  // $('.generatetoken').click()
   
   // function createNewBucket() {
     $('.createbucket').click(function(){
