@@ -22,6 +22,11 @@
 var express = require('express');
 var router = express.Router();
 var request = require("request");
+var fs = require('fs');
+var guid = require('guid'); // random guid generator
+var async = require ('async'); // async package for use of waterfall in upload resumable
+var chalk = require('chalk'); // coloring terminal console logs https://github.com/chalk/chalk
+var logs = console.log;
 
 // Forge NPM
 var forgeSDK = require('forge-apis');
@@ -104,26 +109,107 @@ router.post('/api/forge/oss/buckets', jsonParser, function (req, res) {
 var multer = require('multer')
 var upload = multer({ dest: './tmp' })
 
+function deleteTmpFiles(){
+    const fs = require('fs');
+const path = require('path');
+
+const directory = 'tmp';
+
+fs.readdir(directory, (err, files) => {
+  if (err) throw err;
+
+  for (const file of files) {
+    fs.unlink(path.join(directory, file), err => {
+      if (err) throw err;
+    });
+  }
+});
+}
 // Receive a file from the client and upload to the bucket
 router.post('/api/forge/oss/objects', upload.single('fileToUpload'), function (req, res) {
     // oauth.getTokenInternal().then(function (credentials) {
         var bucketKey = req.body.bucketKey;
         var token = req.body.token; 
+        var fileName = req.file.originalname;
         var credentials = {}
         credentials.access_token = token;
         var fs = require('fs');
-        fs.readFile(req.file.path, function (err, filecontent) {
+        fs.readFile(req.file.path, function (err, data) {
             var objects = new forgeSDK.ObjectsApi();
-            objects.uploadObject(bucketKey, req.file.originalname, filecontent.length, filecontent, {}, {}, credentials)
+            if (data.length < 5242879){
+                objects.uploadObject(bucketKey, req.file.originalname, data.length, data, {}, {}, credentials)
                 .then(function (object) {
-                    res.json({data:object});
+                    setTimeout(function () {deleteTmpFiles()}, 0);
+                    res.status(200).json({data:object});
                 }).catch(function (error) {
                     console.log('Error at Upload Object:');
                     console.log(error);
+                    setTimeout(function () {deleteTmpFiles()}, 0);
                     res.status(500).end();
                 });
+            }else{
+                var filePath = req.file.path;
+                var upload = new Promise(function (resolve, reject) {
+                fs.readFile(filePath, function (err, data) {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        var chunkSize = 5 * 1024 * 1024
+                        var nbChunks = Math.ceil(data.length / chunkSize)
+                        var chunksMap = Array.from({
+                            length: nbChunks
+                        }, (e, i) => i)
+        
+                        // generates uniques session ID
+                        var sessionId = guid.create();
+                        var uploadChuckArray = [];
+        
+                        var range;
+                        var readStream;
+                        // prepare the upload tasks
+                        chunksMap.map((chunkIdx) => {
+                            var start = chunkIdx * chunkSize
+                            var end = Math.min(data.length, (chunkIdx + 1) * chunkSize) - 1;
+        
+                            if (chunkIdx == (nbChunks - 1)) {
+                                chunkSize = data.length - start; // Change the final content-length chunk since it will have a smaller number of bytes on last chunk
+                            }
+        
+                            range = `bytes ${start}-${end}/${data.length}`
+                            readStream = fs.createReadStream(filePath, {start, end})
+        
+                            chunksMap.forEach(function (chunk) {
+                                uploadChuckArray.push(function (callback) {
+                                    logs(chalk.bold.green("**** Uploading Chunks ***** with Range ", range));
+                                    objects.uploadChunk(bucketKey, fileName, chunkSize, range, sessionId.value, readStream, {}, {}, credentials)
+                                        .then(callback)
+                                        .catch(callback)
+                                })
+                            });
+        
+                            async.waterfall(uploadChuckArray, function (err, result) {
+                                if (err.statusCode == 200) {
+                                 resolve(err)
+                                }
+                            })
+        
+        
+                        });
+                    }
+                });
+            });
+            upload.then(function(uploadRes){
+                setTimeout(function () {deleteTmpFiles()}, 0);
+                res.json({data:uploadRes});
+            }).catch(function(error){
+                setTimeout(function () {deleteTmpFiles()}, 0);
+                res.json({data:error});
+            })
+
+            }
         })
-    // });
+                   
 });
 
 String.prototype.toBase64 = function () {

@@ -21,7 +21,7 @@ body {
 #forgeViewer {
   width: 100%;
 }
-
+.main_container{margin: 50px;}
 .heading{text-align: center;}
 
 .step2container,.step3container,.step4container,.translate_container,.step1response,.step2response,.step3response,.step4response,.step5response,.step5container,.loader {display: none;}

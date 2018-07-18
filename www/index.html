@@ -4,42 +4,26 @@
 <head>
   <title>Autodesk Forge Tutorial</title>
   <meta charset="utf-8" />
-  <!-- Common packages: jQuery, Bootstrap, jsTree -->
+  <!-- Common packages: jQuery -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
   <!-- Autodesk Forge Viewer files -->
   <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css?v=v4.0" type="text/css">
   <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/three.min.js"></script>
   <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/viewer3D.min.js?v=v5.0"></script>
   <!-- this project files -->
   <link href="css/main.css" rel="stylesheet" />
-  <script src="js/ForgeTree.js"></script>
-  <script src="js/ForgeViewer.js"></script>
+  <script src="js/main.js"></script>
+  <!-- <script src="js/ForgeViewer.js"></script> -->
 </head>
 
 <body>
   <img class="loader" src="css/loader.gif"/>
-  <!-- Fixed navbar by Bootstrap: https://getbootstrap.com/examples/navbar-fixed-top/ -->
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-      <ul class="nav navbar-nav left">
-        <li>
-          <a href="http://developer.autodesk.com" target="_blank">
-            <img alt="Autodesk Forge" src="//developer.static.autodesk.com/images/logo_forge-2-line.png" height="20">
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  <!-- End of navbar -->
-  <div class="container-fluid fill">
-    <div class="row fill">
+  
+  <div class="main_container">
+    <div>
       <h1 class="heading">Welcome to, forge viewer for non developers</h1>
 
-      <div class="step1container row col-md-offset-1">
+      <div class="step1container">
         <p><label>Step 1: </label> please enter client id and secret key to generate token</p>
         <label>Client Id: &nbsp;&nbsp; </label><input type="text" class="clientid" />&nbsp;&nbsp;&nbsp;&nbsp;
         <label>Client Secret: &nbsp;&nbsp;</label><input type="text" class="clientsecret" /><br><br>
@@ -51,7 +35,7 @@
         </div>
       </div><br><br>
 
-      <div class="step2container row col-md-offset-1">
+      <div class="step2container">
           <p><label>Step 2: </label> Create bucket with unique name</p>
         <input type="text" class="bucketname" />
         <button class="createbucket btn btn-success">Create Bucket</button>
@@ -61,7 +45,7 @@
         </div>
       </div><br><br>
 
-      <div class="step3container row col-md-offset-1">
+      <div class="step3container">
         <p><label>Step 3: </label> select the bucket to upload file</p>
         <select class="buckets"></select>
         <input id="fileupload" type="file" />
@@ -71,7 +55,7 @@
         </div>        
       </div><br><br>
 
-      <div class="step4container row col-md-offset-1">
+      <div class="step4container">
           <p><label>Step 4: </label> select the bucket and file to translate and view</p>
           <select class="filesbucketname"></select>
         <button class="getfiles btn btn-success">get files</button>
@@ -81,16 +65,16 @@
           </div>        
       </div><br><br>
 
-      <div class="step5container row col-md-offset-1">
+      <div class="step5container">
         <p><label>Step 5: </label> click on the file to translate.</p>
         <ol class="fileslist"></ol>
         <div class="step5response">
-            <label>File is translated, here's the response:</label><br>
+            <label>File is successfully posted for translation, check back after a while, here's the response:</label><br>
             <textarea class="translateresponse"></textarea>
           </div>        
       </div><br><br>
 
-      <div class="step5container row col-md-offset-1">
+      <div class="step5container">
         <div class="translate_container">
             This file is not translated yet! <button class="btn btn-xs btn-info translate"><span class="glyphicon glyphicon-eye-open"></span>Start translation</button>
         </div>
